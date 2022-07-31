@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}
+data:
+  DB_ADDRESS: "192.168.2.10"
+  DB_PORT: "5432"
+  SYNAPSE_CONFIG_PATH: /config/homeserver.yaml
+  SYNAPSE_DATA_DIR: /tmp
+  TELEGRAM_CHAT_ID:  "720751922"
+  TELEGRAM_TOKEN: "5431390324:AAGpOofTXTbkNW2VXvc9-1lSKQ6awf28ty4"

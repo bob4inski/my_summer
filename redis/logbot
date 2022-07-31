@@ -1,0 +1,57 @@
+[I 220726 09:19:59 gunicorn] Starting gunicorn 20.0.4
+[I 220726 09:19:59 gunicorn] Listening at: http://0.0.0.0:8080 (1)
+[I 220726 09:19:59 gunicorn] Using worker: sync
+[I 220726 09:19:59 gunicorn] Booting worker with pid: 7
+[I 220726 09:19:59 alertmanager_telegram] Created app instance
+[I 220726 09:31:47 alertmanager_telegram] Received 0 alerts (status=test)
+[E 220726 09:31:48 telegram.vendor.ptb_urllib3.urllib3.connection] Certificate did not match expected hostname: api.telegram.org. Certificate: {'subject': ((('commonName', '*.old.rt.ru'),),), 'issuer': ((('countryName', 'US'),), (('organizationName', 'DigiCert Inc'),), (('commonName', 'RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1'),)), 'version': 3, 'serialNumber': '0F265138CD35BF7D1A74BC8382806F28', 'notBefore': 'Oct 22 00:00:00 2021 GMT', 'notAfter': 'Oct 21 23:59:59 2022 GMT', 'subjectAltName': (('DNS', '*.old.rt.ru'), ('DNS', 'old.rt.ru')), 'OCSP': ('http://ocsp.digicert.com',), 'caIssuers': ('http://cacerts.digicert.com/RapidSSLTLSDVRSAMixedSHA2562020CA-1.crt',), 'crlDistributionPoints': ('http://crl3.digicert.com/RapidSSLTLSDVRSAMixedSHA2562020CA-1.crl', 'http://crl4.digicert.com/RapidSSLTLSDVRSAMixedSHA2562020CA-1.crl')}
+[E 220726 09:31:48 alertmanager_telegram] Exception during sending message
+    Traceback (most recent call last):
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 614, in urlopen
+        httplib_response = self._make_request(conn, method, url,
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 360, in _make_request
+        self._validate_conn(conn)
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 857, in _validate_conn
+        super(HTTPSConnectionPool, self)._validate_conn(conn)
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 289, in _validate_conn
+        conn.connect()
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connection.py", line 342, in connect
+        _match_hostname(cert, self.assert_hostname or hostname)
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connection.py", line 352, in _match_hostname
+        match_hostname(cert, asserted_hostname)
+      File "/usr/local/lib/python3.8/ssl.py", line 416, in match_hostname
+        raise CertificateError("hostname %r "
+    ssl.SSLCertVerificationError: ("hostname 'api.telegram.org' doesn't match either of '*.old.rt.ru', 'old.rt.ru'",)
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/usr/local/lib/python3.8/site-packages/telegram/utils/request.py", line 225, in _request_wrapper
+        resp = self._con_pool.request(*args, **kwargs)
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 68, in request
+        return self.request_encode_body(method, url, fields=fields,
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 148, in request_encode_body
+        return self.urlopen(method, url, **extra_kw)
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/poolmanager.py", line 244, in urlopen
+        response = conn.urlopen(method, u.request_uri, **kw)
+      File "/usr/local/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 647, in urlopen
+        raise SSLError(e)
+    telegram.vendor.ptb_urllib3.urllib3.exceptions.SSLError: ("hostname 'api.telegram.org' doesn't match either of '*.old.rt.ru', 'old.rt.ru'",)
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/alertmanager_telegram/messaging.py", line 32, in alerts
+        current_app.bot.send_message(
+      File "<decorator-gen-2>", line 2, in send_message
+      File "/usr/local/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+        result = func(*args, **kwargs)
+      File "/usr/local/lib/python3.8/site-packages/telegram/bot.py", line 349, in send_message
+        return self._message(url, data, disable_notification=disable_notification,
+      File "/usr/local/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+        result = self._request.post(url, data, timeout=timeout)
+      File "/usr/local/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+        result = self._request_wrapper('POST', url,
+      File "/usr/local/lib/python3.8/site-packages/telegram/utils/request.py", line 231, in _request_wrapper
+        raise NetworkError('urllib3 HTTPError {0}'.format(error))
+    telegram.error.NetworkError: urllib3 HTTPError ("hostname 'api.telegram.org' doesn't match either of '*.old.rt.ru', 'old.rt.ru'",)

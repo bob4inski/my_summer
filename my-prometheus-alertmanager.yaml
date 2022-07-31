@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  alertmanager.yml: "global:\n   resolve_timeout: 5m\nroute:\n     group_by: ['alertname']\n
+    \    group_wait: 30s\n     group_interval: 30s  \n     repeat_interval: 5m  \n
+    \    receiver: 'web.hook'\nreceivers:\n  - name: 'web.hook'  \n    webhook_configs:\n
+    \     - url: 'http://telegramm.example.ru:32411/alerts'\ninhibit_rules:\n  - source_match:\n
+    \      severity: 'critical'    \n    target_match:\n       severity: 'warning'
+    \   \n    equal: ['alertname', 'dev', 'instance']\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: my-prometheus
+    meta.helm.sh/release-namespace: monitoring
+  creationTimestamp: "2022-07-25T06:23:01Z"
+  labels:
+    app: prometheus
+    app.kubernetes.io/managed-by: Helm
+    chart: prometheus-15.10.5
+    component: alertmanager
+    heritage: Helm
+    release: my-prometheus
+  name: my-prometheus-alertmanager
+  namespace: monitoring
+  resourceVersion: "3111211"
+  uid: b4f2c470-8834-4613-8215-84abe0ce0137

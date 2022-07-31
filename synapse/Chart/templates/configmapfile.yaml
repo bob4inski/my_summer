@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-file
+data:
+  homeserver.yaml: |
+    enable_registration_without_verification: true
+    enable_registration: true
+    report_stats: true
+    server_name: "SERVERNAME"
+    pid_file: DATADIR/homeserver.pid
+    listeners:
+      - port: 8008
+        tls: false
+        type: http
+        x_forwarded: true
+        bind_addresses: ['::1', '0.0.0.0']
+        resources:
+          - names: [client, federation]
+            compress: false
+    database:
+      name: sqlite3
+      args:
+        database: /tmp/homeserver.db
+    #log_config: "CONFDIR/SERVERNAME.log.config"
+    media_store_path: /tmp/media_store
+    signing_key_path: "/tmp/SERVERNAME.signing.key"
+    trusted_key_servers:
+      - server_name: "matrix.org"

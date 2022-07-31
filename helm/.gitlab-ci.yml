@@ -1,0 +1,24 @@
+stages:
+    - test
+    - deploy
+
+
+test:
+    stage: test
+    script: 
+        - echo "hello:"
+        - echo "the project directory is - $CI_PROJECT_DIR"
+        - cat $CI_PROJECT_DIR/README.md ; echo
+        - echo "and where am I? - $PWD"
+        
+deploy:
+    image: 
+        name: alpine/helm
+        entrypoint: [""]
+    stage: deploy
+    variables:
+        KUBECONFIG: ./KUBECONFIG
+    tags:
+        - helm
+    script: 
+       - helm upgrade --install kubeapps Chart/

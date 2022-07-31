@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    app: {{ .Release.Name }}
+  type: NodePort
+  ports:
+  - name: http
+    port: {{ .Values.http.port }}
+    targetPort: {{ .Values.http.targetPort }}

@@ -1,0 +1,48 @@
+stages:
+    - build
+    - dockerbuild
+    - deploy
+
+
+build:
+    image: 
+        name: node:lts
+        entrypoint: [""]
+    stage: build
+    script:
+        - yarn install
+        - yarn dist
+        - ls
+    artifacts:
+        paths:
+            - webapp/
+    when: manual
+
+dockerbuild:
+    image: docker
+    stage: dockerbuild
+    dependencies:
+        - build
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u "$DOCKER_USER" -p "$DOCKER_PSWD"
+    when: manual
+    script:
+        - docker build -t bob4inski/tescase:${CI_COMMIT_SHA} .
+        - docker push bob4inski/tescase:${CI_COMMIT_SHA}
+deploy:
+    image: 
+        name: alpine/helm
+        entrypoint: [""]
+    stage: deploy
+    variables:
+        KUBECONFIG: ./KUBECONFIG
+    tags:
+        - helm
+    script: 
+       - helm upgrade --install  --namespace element element Chart/   
+        
+    
+
+

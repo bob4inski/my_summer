@@ -1,0 +1,5 @@
+http:
+  port: 80
+  targetPort: 80
+  host: element.example.ru
+  

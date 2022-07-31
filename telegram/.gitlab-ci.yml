@@ -1,0 +1,16 @@
+stages:
+    - deploy
+
+
+deploy:
+    image: 
+        name: alpine/k8s:1.21.13
+        entrypoint: [""]
+    stage: deploy
+    variables:
+        KUBECONFIG: ./KUBECONFIG
+    tags:
+        - helm
+    script: 
+       - helm upgrade --install --namespace telegramm telegramm Chart/
+       - kubectl rollout restart deployment/telegramm -n telegramm
